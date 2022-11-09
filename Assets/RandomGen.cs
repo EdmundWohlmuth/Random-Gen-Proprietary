@@ -4,16 +4,22 @@ using UnityEngine;
 
 public class RandomGen : MonoBehaviour
 {
-    public int width;
-    public int depth;
+    public float width;
+    public float depth;
     public float amplitude;
 
     bool isXStreet = false;
-    bool isYStreet = false;
+    bool isZStreet = false;
+
+    public float[] zStreets;
+
+    [Range(0, 10)]
+    public int streetFrequency;
 
     // Start is called before the first frame update
     void Start()
     {
+        CreateZStreets();
         GenCity();
     }
 
@@ -25,27 +31,59 @@ public class RandomGen : MonoBehaviour
 
     void GenCity()
     {
-        for (int x = 0; x < width; x++)
+        int i = 1;
+
+        for (int x = 1; x < width; x += 2)
         {
-            if (Random.Range(1, 10) < 2) isXStreet = true;
+            if (Random.Range(1, 10) < streetFrequency) isXStreet = true;
 
-            for (int z = 0; z < depth; z++)
+            for (int z = 1; z < depth; z += 2)
             {
-                float y = Random.Range(1f, 3.5f);
-                /*float max = Random.Range(2.5f, 6.5f);
-                float min = Random.Range(0.25f, 2.4f);
-                float y = Mathf.Abs(PerlinNoise2D(x, z) * amplitude);*/
-
                 if (!isXStreet)
                 {
+                    float Y = Random.Range(1f, 5.5f);
+                    float X = Random.Range(0.75f, 2.5f);
+                    float Z = Random.Range(0.75f, 2.5f);
+                    
                     GameObject building = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                    building.transform.position = new Vector3(x, (y / 2), z);
-                    building.transform.localScale = new Vector3(.75f, y, .75f);
+                    building.transform.position = new Vector3(x, (Y / 2), z);
+                    building.transform.localScale = new Vector3(X, Y, Z);
+                }
+                else
+                {
+                    GameObject test = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                    test.transform.position = new Vector3(x, 0, z);
+                    test.transform.localScale = new Vector3(0.25f, 0.25f, 0.25f);
+                }
+            }   
+            i++;
+            isXStreet = false;
+        }
+    }
+
+    void CreateZStreets()
+    {
+        zStreets = new float[25];
+
+        for (int x = 1; x < width; x += 2)
+        {
+            if (Random.Range(1, 10) < streetFrequency)
+            {
+
+                for (int z = 1; z < depth; z +=2)
+                {
+                    GameObject test = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                    test.transform.position = new Vector3(z, 0, x);
+                    test.transform.localScale = new Vector3(0.25f, 0.25f, 0.25f);
+
+                    //Debug.Log(x);
+
+                    zStreets[x] = x;
                 }
             }
 
-            isXStreet = false;
         }
+
     }
 
     float PerlinNoise2D(float x, float y)
