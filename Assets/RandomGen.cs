@@ -41,29 +41,34 @@ public class RandomGen : MonoBehaviour
             {
                 if (!isXStreet)
                 {
-                    float Y = Random.Range(1f, 5.5f);
-                    float X = Random.Range(0.75f, 2.5f);
-                    float Z = Random.Range(0.75f, 2.5f);
-                    
-                    GameObject building = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                    building.transform.position = new Vector3(x, (Y / 2), z);
-                    building.transform.localScale = new Vector3(X, Y, Z);
+                    if (z != zStreets[i])
+                    {
+
+                        float Y = Random.Range(1f, 5.5f);
+                        float X = Random.Range(0.75f, 2.5f);
+                        float Z = Random.Range(0.75f, 2.5f);
+
+                        GameObject building = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                        building.transform.position = new Vector3(x, (Y / 2), z);
+                        building.transform.localScale = new Vector3(X, Y, Z);
+                    }
                 }
                 else
                 {
-                    GameObject test = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                    /*GameObject test = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                     test.transform.position = new Vector3(x, 0, z);
-                    test.transform.localScale = new Vector3(0.25f, 0.25f, 0.25f);
+                    test.transform.localScale = new Vector3(0.25f, 0.25f, 0.25f);*/
                 }
-            }   
-            i++;
+                i += 2;
+            }
+            i = 1;
             isXStreet = false;
         }
     }
 
     void CreateZStreets()
     {
-        zStreets = new float[25];
+        zStreets = new float[((long)width)];
 
         for (int x = 1; x < width; x += 2)
         {
@@ -72,9 +77,9 @@ public class RandomGen : MonoBehaviour
 
                 for (int z = 1; z < depth; z +=2)
                 {
-                    GameObject test = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                    /*GameObject test = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                     test.transform.position = new Vector3(z, 0, x);
-                    test.transform.localScale = new Vector3(0.25f, 0.25f, 0.25f);
+                    test.transform.localScale = new Vector3(0.25f, 0.25f, 0.25f);*/
 
                     //Debug.Log(x);
 
