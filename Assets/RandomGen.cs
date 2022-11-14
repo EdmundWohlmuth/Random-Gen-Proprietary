@@ -4,23 +4,27 @@ using UnityEngine;
 
 public class RandomGen : MonoBehaviour
 {
+    [Header("City Params")]
     public float width;
     public float depth;
     public float amplitude;
-
-    bool isXStreet = false;
-    bool isZStreet = false;
-
-    public float[] zStreets;
+    public int blocks;
 
     [Range(0, 10)]
     public int streetFrequency;
 
+    private float xOffSet;
+    private float zOffSet;
+    bool isXStreet = false;
+
+    [Header("Other Values")]
+    public float[] zStreets;
+
+
     // Start is called before the first frame update
     void Start()
     {
-        CreateZStreets();
-        GenCity();
+        NewGeneration();
     }
 
     // Update is called once per frame
@@ -29,13 +33,32 @@ public class RandomGen : MonoBehaviour
         
     }
 
+    void NewGeneration()
+    {
+        xOffSet = 0;
+        zOffSet = 0;
+
+        for (int f = 0; f < blocks; f++)
+        {
+            for (int i = 0; i < blocks; i++)
+            {
+                CreateZStreets();
+                GenCity();
+                zOffSet += depth + 2;
+            }
+            this.transform.position = new Vector3(xOffSet, 0, zOffSet);
+            zOffSet = 0;
+            xOffSet += width + 2;
+        }
+    }
+
     void GenCity()
     {
         int i = 1;
 
         for (int x = 1; x < width; x += 2)
         {
-            if (Random.Range(1, 10) < streetFrequency) isXStreet = true;
+            if (Random.Range(1, 10) <= streetFrequency) isXStreet = true;
 
             for (int z = 1; z < depth; z += 2)
             {
@@ -44,12 +67,12 @@ public class RandomGen : MonoBehaviour
                     if (z != zStreets[i])
                     {
 
-                        float Y = Random.Range(1f, 5.5f);
+                        float Y = Random.Range(1f, amplitude);
                         float X = Random.Range(0.75f, 2.5f);
                         float Z = Random.Range(0.75f, 2.5f);
 
                         GameObject building = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                        building.transform.position = new Vector3(x, (Y / 2), z);
+                        building.transform.position = new Vector3(x + xOffSet, (Y / 2), z + zOffSet);
                         building.transform.localScale = new Vector3(X, Y, Z);
                     }
                 }
@@ -72,7 +95,7 @@ public class RandomGen : MonoBehaviour
 
         for (int x = 1; x < width; x += 2)
         {
-            if (Random.Range(1, 10) < streetFrequency)
+            if (Random.Range(1, 10) <= streetFrequency)
             {
 
                 for (int z = 1; z < depth; z +=2)

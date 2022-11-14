@@ -330,14 +330,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6024d76ae874f02459cb181f3b3f8332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 50
-  depth: 50
+  width: 25
+  depth: 25
   amplitude: 5
+  blocks: 8
+  streetFrequency: 2
   zStreets:
   - 0
   - 0
   - 0
-  streetFrequency: 3
 --- !u!4 &2097383298
 Transform:
   m_ObjectHideFlags: 0
