@@ -19,6 +19,7 @@ public class RandomGen : MonoBehaviour
 
     [Header("Other Values")]
     public float[] zStreets;
+    public GameObject levelMesh;
 
 
     // Start is called before the first frame update
@@ -30,7 +31,7 @@ public class RandomGen : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     void NewGeneration()
@@ -74,6 +75,7 @@ public class RandomGen : MonoBehaviour
                         GameObject building = GameObject.CreatePrimitive(PrimitiveType.Cube);
                         building.transform.position = new Vector3(x + xOffSet, (Y / 2), z + zOffSet);
                         building.transform.localScale = new Vector3(X, Y, Z);
+                        building.transform.parent = levelMesh.transform;
                     }
                 }
                 else
